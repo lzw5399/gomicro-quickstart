@@ -34,5 +34,7 @@ func main() {
 		web.Metadata(map[string]string{"protocol": "http"}), // 元信息
 		web.Handler(router)) // 路由
 
+	server.Init()
+
 	_ = server.Run()
 }
