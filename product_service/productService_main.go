@@ -22,9 +22,18 @@ func main() {
 	router := gin.Default()
 	v1 := router.Group("v1")
 	{
-		v1.GET("list", func(c *gin.Context) {
+		v1.POST("list", func(c *gin.Context) {
+			var req ProdRequest
+			if err := c.Bind(&req); err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{
+					"data": "模型绑定失败",
+				})
+				c.Abort()
+				return
+			}
+
 			c.JSON(http.StatusOK, gin.H{
-				"data": model.NewProductList(5),
+				"data": model.NewProductList(req.Size),
 			})
 		})
 	}
@@ -36,7 +45,11 @@ func main() {
 		web.Metadata(map[string]string{"protocol": "http"}), // 元信息
 		web.Handler(router)) // 路由
 
-	server.Init()
+	_ = server.Init()
 
 	_ = server.Run()
+}
+
+type ProdRequest struct {
+	Size int `json:"size"`
 }

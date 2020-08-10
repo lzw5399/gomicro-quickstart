@@ -8,12 +8,13 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
+
 	"github.com/micro/go-micro/client"
 	"github.com/micro/go-micro/client/selector"
 	"github.com/micro/go-micro/registry"
 	"github.com/micro/go-plugins/client/http"
 	"github.com/micro/go-plugins/registry/consul"
-	"log"
 )
 
 func main() {
@@ -28,11 +29,11 @@ func main() {
 
 	// 3. 请求服务
 	resp, err := callByGoPlugin(mySelector)
-	if err != nil{
+	if err != nil {
 		log.Fatal("request API failed", err)
 	}
 
-	fmt.Printf("[服务调用结果]: %v", resp)
+	fmt.Printf("[服务调用结果]:\r\n %v", resp)
 }
 
 func callByGoPlugin(s selector.Selector) (map[string]interface{}, error) {
@@ -43,7 +44,7 @@ func callByGoPlugin(s selector.Selector) (map[string]interface{}, error) {
 	)
 
 	// 2. 新建请求对象，传入: (1)服务名 (2)endpoint (3)请求参数
-	req := gopluginClient.NewRequest("ProductService", "/v1/list", map[string]string{})
+	req := gopluginClient.NewRequest("ProductService", "/v1/list", map[string]interface{}{"size": 6})
 
 	// 3. 新建响应对象，并call请求，获取响应
 	var resp map[string]interface{}
