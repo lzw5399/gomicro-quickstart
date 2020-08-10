@@ -23,12 +23,14 @@ func main() {
 	v1 := router.Group("v1")
 	{
 		v1.GET("list", func(c *gin.Context) {
-			c.JSON(http.StatusOK, model.NewProductList(5))
+			c.JSON(http.StatusOK, gin.H{
+				"data": model.NewProductList(5),
+			})
 		})
 	}
 
 	server := web.NewService(
-		web.Name("productService"),                          // 当前微服务服务名
+		web.Name("ProductService"),                          // 当前微服务服务名
 		web.Registry(cr),                                    // 注册到consul
 		web.Address(":8001"),                                // 端口
 		web.Metadata(map[string]string{"protocol": "http"}), // 元信息
