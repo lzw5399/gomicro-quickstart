@@ -6,15 +6,21 @@
 package main
 
 import (
-	"gomicro-quickstart/grpc_demo/service"
+	"gomicro-quickstart/grpc_server/service"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials"
 	"log"
 	"net"
 )
 
 func main() {
+	tls, err := credentials.NewServerTLSFromFile("grpc_server/keys/server.crt", "grpc_server/keys/server.key")
+	if err != nil {
+		log.Fatal("服务端获取证书失败: ", err)
+	}
+
 	// 1. new一个grpc的server
-	rpcServer := grpc.NewServer()
+	rpcServer := grpc.NewServer(grpc.Creds(tls))
 
 	// 2. 将刚刚我们新建的ProdService注册进去
 	service.RegisterProdServiceServer(rpcServer, new(service.ProdService))
