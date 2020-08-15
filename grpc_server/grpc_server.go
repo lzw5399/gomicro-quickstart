@@ -6,11 +6,12 @@
 package main
 
 import (
+	"fmt"
 	"gomicro-quickstart/grpc_server/service"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"log"
-	"net"
+	"net/http"
 )
 
 func main() {
@@ -27,11 +28,22 @@ func main() {
 	service.RegisterProdServiceServer(rpcServer, new(service.ProdService))
 
 	// 4. 新建一个listener，以tcp方式监听8082端口
-	listener, err := net.Listen("tcp", ":8082")
-	if err != nil {
-		log.Fatal("服务监听端口失败", err)
+	//listener, err := net.Listen("tcp", ":8082")
+	//if err != nil {
+	//	log.Fatal("服务监听端口失败", err)
+	//}
+
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
+		fmt.Println(request)
+		rpcServer.ServeHTTP(writer, request)
+	})
+	// 5. 运行rpcServer，传入listener
+	// _ = rpcServer.Serve(listener)
+	httpServer := http.Server{
+		Addr:    ":8082",
+		Handler: mux,
 	}
 
-	// 5. 运行rpcServer，传入listener
-	_ = rpcServer.Serve(listener)
+	httpServer.ListenAndServeTLS("grpc_server/keys/server.crt", "grpc_server/keys/server_no_password.key")
 }
