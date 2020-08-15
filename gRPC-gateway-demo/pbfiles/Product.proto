@@ -1,9 +1,6 @@
-
-// 指定的当前proto语法的版本，有2和3
 syntax = "proto3";
-
-// 指定等会文件生成出来的package
 package service;
+import "google/protobuf/api.proto";
 
 // 定义request model
 message ProductRequest{
