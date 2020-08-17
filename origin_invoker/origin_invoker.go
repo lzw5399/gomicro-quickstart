@@ -1,7 +1,7 @@
 /**
  * @Author: lzw5399
  * @Date: 2020/8/8 23:30
- * @Desc: 测试consul服务发现
+ * @Desc: 测试consul服务发现.
  */
 package main
 
