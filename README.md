@@ -8,3 +8,5 @@
   > 客户端 使用net/http的httpclient请求服务端
 - goplugin_invoker
   > 使用go-plugins插件的http client请求服务端
+- goplugin_http_proto_invoker
+  > 使用go-plugins + proto + http的client

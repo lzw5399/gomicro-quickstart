@@ -1,0 +1,15 @@
+syntax = "proto3";
+package models;
+
+message ProdModel {
+  int32 Id = 1;
+  string  Name = 2;
+}
+
+message ProdRequest {
+  int32 Size = 1;
+}
+
+message ProdListResponse{
+  repeated ProdModel data = 1;
+}
