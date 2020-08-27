@@ -8,8 +8,8 @@ package model
 import "strconv"
 
 type Product struct {
-	Id   int
-	Name string
+	Id   int  `json:"pid"`
+	Name string `json:"pname"`
 }
 
 func NewProduct(id int, name string) *Product {
